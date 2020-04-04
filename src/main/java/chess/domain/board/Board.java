@@ -4,6 +4,7 @@ import chess.domain.piece.Blank;
 import chess.domain.piece.Piece;
 import chess.domain.piece.Team;
 import chess.domain.position.Position;
+import chess.exception.PieceImpossibleMoveException;
 import chess.exception.TakeTurnException;
 
 import java.util.List;
@@ -40,6 +41,10 @@ public class Board {
     public void move(final String from, final String to, final Team currentTurn) {
         Piece fromPiece = findPieceBy(Position.of(from));
         Piece toPiece = findPieceBy(Position.of(to));
+
+        if (fromPiece.isBlank()) {
+            throw new PieceImpossibleMoveException("빈 칸은 이동할 수 없습니다.");
+        }
 
         if (!fromPiece.isSameTeam(currentTurn)) {
             throw new TakeTurnException("체스 게임 순서를 지켜주세요.");
